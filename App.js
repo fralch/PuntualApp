@@ -11,7 +11,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Camara" component={Camara} />
+        <Stack.Screen name="Camara" component={Camara}  options={{headerShown: false}}  />
       </Stack.Navigator>
     </NavigationContainer>
   

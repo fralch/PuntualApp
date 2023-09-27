@@ -1,10 +1,17 @@
+import React, { useState, useEffect } from 'react';
 import { Camera, CameraType } from 'expo-camera';
-import { useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+
+import  PermisoCamara  from  './darpermiso.jsx';
 
 export default function Camara() {
   const [type, setType] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
+
+  useEffect(() => {
+    requestPermission();
+  },[]);
+  
 
   if (!permission) {
     // Camera permissions are still loading
@@ -14,10 +21,8 @@ export default function Camara() {
   if (!permission.granted) {
     // Camera permissions are not granted yet
     return (
-      <View style={styles.container}>
-        <Text style={{ textAlign: 'center' }}>We need your permission to show the camera</Text>
-        <Button onPress={requestPermission} title="grant permission" />
-      </View>
+      <PermisoCamara />
+      
     );
   }
 
