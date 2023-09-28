@@ -6,11 +6,13 @@ import { useNavigation } from '@react-navigation/native';
 const { width, height } = Dimensions.get('window');
 
 export default function Camara() {
-  const [type, setType] = useState(CameraType.back);
+  const [type, setType] = useState(CameraType.front);
   const [permission, requestPermission] = Camera.useCameraPermissions();
+  const [hora, sethora] = useState("08:40");
   const navigation = useNavigation();
   useEffect(() => {
-    requestPermission();
+    requestPermission(); 
+    console.log(hora)
   },[]);
   
 
@@ -20,8 +22,6 @@ export default function Camara() {
   }
 
   if (!permission.granted) {
-    // Permissions are granted
-    // Start the camera preview
     return (
       <View style={{backgroundColor: "black", flex: 1, justifyContent:"center", alignContent:"center"}}>
       <Image source={{uri: 'https://i.gifer.com/8Etj.gif'}} style={{width: 200, height: 200, alignSelf:"center"}}/>
@@ -29,24 +29,22 @@ export default function Camara() {
      <TouchableOpacity style={styles.boton} onPress={requestPermission }>
          {
              !permission.granted ? <Text style={{ textAlign: 'center',  color:"white"}}>Dar permiso</Text> : <Text style={{ textAlign: 'center',  color:"white"}}>Ya tienes permiso</Text>
-
          }
      </TouchableOpacity>
-
      </View>
     )
-  }
-
-  function toggleCameraType() {
-    setType(current => (current === CameraType.back ? CameraType.front : CameraType.back));
   }
 
   return (
     <View style={styles.container}>
       <Camera style={styles.camera} type={type}>
+        <View style={{justifyContent:"center"}} >
+          <Text style={{ alignSelf:"center", marginTop: 90, color:"white", textShadowColor: 'black', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 3 }}> 28 Septiembre 2023</Text>
+          <Text style={{ color: 'white', fontSize: 40, fontWeight:"bold", textShadowColor: 'black', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 3}}>{hora} {"pm"}</Text>
+        </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={toggleCameraType}>
-            <Text style={styles.text}>Flip Camera</Text>
+          <TouchableOpacity style={styles.button} >
+            <Text style={styles.text}>Marcar </Text>
           </TouchableOpacity>
         </View>
       </Camera>
@@ -61,20 +59,29 @@ const styles = StyleSheet.create({
   },
   camera: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   buttonContainer: {
-    flex: 1,
     flexDirection: 'row',
-    backgroundColor: 'transparent',
-    margin: 64,
+    marginTop: height*0.70,
+    opacity: 0.5,
   },
   button: {
     flex: 1,
     alignSelf: 'flex-end',
+    backgroundColor: 'transparent',
     alignItems: 'center',
+    margin: 50,
+    padding: 5,
+    height: 50,
+    borderRadius: 20,
+    borderColor: 'gray',
+    borderWidth: 2,
+    
   },
   text: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: 'bold',
     color: 'white',
   },
