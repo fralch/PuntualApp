@@ -1,39 +1,50 @@
-import React, { useState, useEffect } from 'react';
-import { Camera, CameraType } from 'expo-camera';
-import { Button, StyleSheet, Text, TouchableOpacity, View, Dimensions } from 'react-native';
-
-const { width, height } = Dimensions.get('window');
-
-export default function PermisoCamara() {
-    const [type, setType] = useState(CameraType.back);
-    const [permission, requestPermission] = Camera.useCameraPermissions();
-
-    
-
+import Animated, {
+    useSharedValue,
+    withTiming,
+    useAnimatedStyle,
+    Easing,
+  } from 'react-native-reanimated';
+  import { View, Button, StyleSheet } from 'react-native';
+  
+  export default function PermisoCamara() {
+    const randomWidth = useSharedValue(10);
+  
+    const config = {
+      duration: 500,
+      easing: Easing.bezier(0.5, 0.01, 0, 1),
+    };
+  
+    const style = useAnimatedStyle(() => {
+      return {
+        width: withTiming(randomWidth.value, config),
+      };
+    });
+  
     return (
-        <View style={styles.container}>
-        <Text style={{ textAlign: 'center' }}>We need your permission to show the camera</Text>
-        <TouchableOpacity style={styles.boton} onPress={requestPermission}>
-            <Text style={styles.text}>Grant Permission</Text>
-        </TouchableOpacity>
-
-        </View>
-      );
-}
-
-const styles = StyleSheet.create({
+      <View style={styles.container}>
+        <Animated.View style={[styles.box, style]} />
+        <Button
+          title="toggle"
+          onPress={() => {
+            randomWidth.value = Math.random() * 350;
+          }}
+        />
+      </View>
+    );
+  }
+  
+  const styles = StyleSheet.create({
     container: {
       flex: 1,
+      alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: '#000',
+      flexDirection: 'column',
     },
-    // crear boton circular
-    boton:{
-        backgroundColor: 'red',
-        padding: 20,
-        margin: 20,
-        width: height / 6,
-        height: height / 6,
-        borderRadius: (height / 6) / 2,
-    }
-});
+    box: {
+      width: 100,
+      height: 80,
+      backgroundColor: 'black',
+      margin: 30,
+    },
+  });
+  
