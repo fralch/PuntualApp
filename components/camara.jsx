@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Camera, CameraType } from 'expo-camera';
-import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Button, StyleSheet, Text, TouchableOpacity, View, Dimensions, Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-import  PermisoCamara  from  './darpermiso.jsx';
+const { width, height } = Dimensions.get('window');
 
 export default function Camara() {
   const [type, setType] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
-
+  const navigation = useNavigation();
   useEffect(() => {
     requestPermission();
   },[]);
@@ -19,11 +20,21 @@ export default function Camara() {
   }
 
   if (!permission.granted) {
-    // Camera permissions are not granted yet
+    // Permissions are granted
+    // Start the camera preview
     return (
-      <PermisoCamara />
-      
-    );
+      <View style={{backgroundColor: "black", flex: 1, justifyContent:"center", alignContent:"center"}}>
+      <Image source={{uri: 'https://i.gifer.com/8Etj.gif'}} style={{width: 200, height: 200, alignSelf:"center"}}/>
+     <Text style={{ textAlign: 'center',  color:"white"}}>Necesitamos permiso para la cámara</Text>
+     <TouchableOpacity style={styles.boton} onPress={requestPermission }>
+         {
+             !permission.granted ? <Text style={{ textAlign: 'center',  color:"white"}}>Dar permiso</Text> : <Text style={{ textAlign: 'center',  color:"white"}}>Ya tienes permiso</Text>
+
+         }
+     </TouchableOpacity>
+
+     </View>
+    )
   }
 
   function toggleCameraType() {
@@ -67,4 +78,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
   },
+  boton:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#C91503',
+    margin: 20,
+    width: width*0.3,
+    height: 50,
+    borderRadius: 20,
+}
 });
