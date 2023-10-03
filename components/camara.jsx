@@ -8,11 +8,23 @@ const { width, height } = Dimensions.get('window');
 export default function Camara() {
   const [type, setType] = useState(CameraType.front);
   const [permission, requestPermission] = Camera.useCameraPermissions();
-  const [hora, sethora] = useState("08:40");
+  const [hora, sethora] = useState("");
+  const [fecha, setfecha] = useState("Lunes 20 de Septiembre");
   const navigation = useNavigation();
   useEffect(() => {
     requestPermission();
     console.log(hora)
+  }, []);
+
+  useEffect(() => {
+    const fecha_actual = new Date();
+    const dia = fecha_actual.getDay();
+    const mes = fecha_actual.getMonth();
+    const ano = fecha_actual.getFullYear();
+
+    const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+
+    setfecha(` ${fecha_actual.getDate()} de ${meses[mes]} del ${ano}`);
   }, []);
 
 
@@ -37,11 +49,22 @@ export default function Camara() {
 
   return (
     <View style={styles.container}> 
+       <Text style={styles.fecha}>{fecha}</Text>
+       <Text style={styles.hora}>{hora}</Text>
        <View style={{ marginHorizontal: 10, }}>
-            <Camera style={{ height: height * 0.72 }}  >
-
+            <Camera style={{ height: height * 0.70, borderRadius: 10 }}  
+                type={type}
+                onCameraReady={() => {
+                  setInterval(() => {
+                    sethora(new Date().toLocaleTimeString())
+                  }, 1000)
+                }}
+             >
             </Camera>
-          </View>
+        </View>
+        <TouchableOpacity style={styles.boton} onPress={() => navigation.navigate("Home")}>
+          <Text style={{ textAlign: 'center', color: "white", fontSize:20 }}>Marcar</Text>
+        </TouchableOpacity>
     </View>
   );
 }
@@ -50,7 +73,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+    backgroundColor: "black"
   },
- 
+  fecha: {
+    color: "white",
+    fontSize: 15,
+    textAlign: "center",
+    marginTop: 0, 
+  },
+  hora: {
+    color: "white",
+    fontSize: 40,
+    textAlign: "center",
+    marginBottom: 10
+  },
+  boton: {
+    backgroundColor: "red",
+    justifyContent: "center",
+    height: 50,
+    marginHorizontal: 100,
+    marginVertical: 10,
+    padding: 10,
+    borderRadius: 10
+  }
   
 });
