@@ -49,20 +49,22 @@ export default function Camara() {
 
   return (
     <View style={styles.container}> 
-       <Text style={styles.fecha}>{fecha}</Text>
+        <View >
+        <Text style={styles.fecha}>{fecha}</Text>
        <Text style={styles.hora}>{hora}</Text>
-       <View style={{ marginHorizontal: 10, }}>
-            <Camera style={{ height: height * 0.70, borderRadius: 10 }}  
-                type={type}
-                onCameraReady={() => {
-                  setInterval(() => {
-                    sethora(new Date().toLocaleTimeString())
-                  }, 1000)
-                }}
-             >
-            </Camera>
         </View>
-        <TouchableOpacity style={styles.boton} onPress={() => navigation.navigate("Home")}>
+      <View style={{ marginHorizontal: 10, borderRadius: 30, overflow: 'hidden' }}>
+        <Camera style={{ height: height * 0.70 }}  
+          type={type}
+          onCameraReady={() => {
+            setInterval(() => {
+              sethora(new Date().toLocaleTimeString())
+            }, 1000)
+          }}
+        >
+        </Camera>
+      </View>
+        <TouchableOpacity style={styles.boton} >
           <Text style={{ textAlign: 'center', color: "white", fontSize:20 }}>Marcar</Text>
         </TouchableOpacity>
     </View>
@@ -73,13 +75,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: "black"
+    backgroundColor: "#28233F"
   },
   fecha: {
     color: "white",
     fontSize: 15,
     textAlign: "center",
-    marginTop: 0, 
   },
   hora: {
     color: "white",
@@ -88,13 +89,13 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   boton: {
-    backgroundColor: "red",
+    backgroundColor: "#4C4BF1",
     justifyContent: "center",
     height: 50,
     marginHorizontal: 100,
     marginVertical: 10,
     padding: 10,
-    borderRadius: 10
+    borderRadius: 50
   }
   
 });
