@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Camera, CameraType } from 'expo-camera';
 import { Button, StyleSheet, Text, TouchableOpacity, View, Dimensions, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const { width, height } = Dimensions.get('window');
 
@@ -49,11 +50,14 @@ export default function Camara() {
 
   return (
     <View style={styles.container}> 
-        <View >
-        <Text style={styles.fecha}>{fecha}</Text>
-       <Text style={styles.hora}>{hora}</Text>
+      <LinearGradient colors={['#18191c', '#2F2E3C']} style={{flex:1, paddingTop:60}} 
+      start={{ x: 0.9, y: 1}} end={{ x: 0.1, y: 1 }}
+       >
+        <View  style={styles.fecha_completa}>
+          <Text style={styles.fecha}>{fecha}</Text>
+          <Text style={styles.hora}>{hora}</Text>
         </View>
-      <View style={{ marginHorizontal: 10, borderRadius: 30, overflow: 'hidden' }}>
+      <View style={{ marginHorizontal: 10, borderRadius:50, overflow: 'hidden' }}>
         <Camera style={{ height: height * 0.70 }}  
           type={type}
           onCameraReady={() => {
@@ -64,9 +68,12 @@ export default function Camara() {
         >
         </Camera>
       </View>
-        <TouchableOpacity style={styles.boton} >
-          <Text style={{ textAlign: 'center', color: "white", fontSize:20 }}>Marcar</Text>
-        </TouchableOpacity>
+            <TouchableOpacity >
+          <LinearGradient colors={['#E53854', '#E53854']} style={styles.boton}> 
+              <Text style={{ textAlign: 'center', color: "white", fontSize:18 }}>Tomar foto</Text>
+          </LinearGradient>
+            </TouchableOpacity>
+      </LinearGradient>
     </View>
   );
 }
@@ -75,7 +82,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: "#28233F"
   },
   fecha: {
     color: "white",
@@ -89,13 +95,20 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   boton: {
-    backgroundColor: "#4C4BF1",
+    backgroundColor: "#292937",
     justifyContent: "center",
-    height: 50,
-    marginHorizontal: 100,
+    height: 60,
+    marginHorizontal: 80,
     marginVertical: 10,
     padding: 10,
     borderRadius: 50
+  }, 
+  fecha_completa:{
+    marginHorizontal:30, 
+    marginBottom:15,
+    padding:5, 
+    borderRadius:20,
+   
   }
   
 });
