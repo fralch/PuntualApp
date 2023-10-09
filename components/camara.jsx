@@ -82,18 +82,12 @@ export default function Camara() {
         animationType="slide"
         transparent={true}
         visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-        }}
+      
       >
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(0,0,0,0.5)" }}>
           <View style={{ backgroundColor: "#292937", width: width * 0.8,  borderRadius: 20, padding: 20 }}>
             <Text style={{ textAlign: "center", fontSize: 20, color:"white" }}>Asistencia Marcada</Text>
-            <TouchableOpacity  style={[styles.boton,  {backgroundColor:"#E53854"}]} 
-            onPress={() => {
-              setModalVisible(!modalVisible);
-            }}
-            >
+            <TouchableOpacity  style={[styles.boton,  {backgroundColor:"#E53854"}]} onPress={() => {setModalVisible(!modalVisible);}}>
                 <Text style={{ textAlign: 'center', color: "white", fontSize: 18 }}>Aceptar</Text>
             </TouchableOpacity>
               
