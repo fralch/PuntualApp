@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Camera, CameraType } from 'expo-camera';
-import { Button, StyleSheet, Text, TouchableOpacity, View, Dimensions, Image } from 'react-native';
+import { Button, StyleSheet, Text, TouchableOpacity, View, Dimensions, Image, Modal  } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -11,6 +11,7 @@ export default function Camara() {
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [hora, sethora] = useState("");
   const [fecha, setfecha] = useState("Lunes 20 de Septiembre");
+  const [modalVisible, setModalVisible] = useState(false);
   const navigation = useNavigation();
   useEffect(() => {
     requestPermission();
@@ -56,6 +57,7 @@ export default function Camara() {
         <View  style={styles.fecha_completa}>
           <Text style={styles.fecha}>{fecha}</Text>
           <Text style={styles.hora}>{hora}</Text>
+          <Text style={{color:"white", alignSelf:"center", marginVertical:0}}>Total min tarde: 12</Text>
         </View>
       <View style={{ marginHorizontal: 10, borderRadius:50, overflow: 'hidden' }}>
         <Camera style={{ height: height * 0.70 }}  
@@ -68,12 +70,37 @@ export default function Camara() {
         >
         </Camera>
       </View>
-            <TouchableOpacity >
-          <LinearGradient colors={['#E53854', '#E53854']} style={styles.boton}> 
-              <Text style={{ textAlign: 'center', color: "white", fontSize:18 }}>Tomar foto</Text>
-          </LinearGradient>
+            <TouchableOpacity  onPress={() => {setModalVisible(true)}}>
+              <LinearGradient colors={['#E53854', '#E53854']} style={styles.boton}> 
+                  <Text style={{ textAlign: 'center', color: "white", fontSize:18 }}>Tomar foto</Text>
+              </LinearGradient>
             </TouchableOpacity>
       </LinearGradient>
+
+      {/* modal para confirmar marcaje de asisatencia  */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+        }}
+      >
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(0,0,0,0.5)" }}>
+          <View style={{ backgroundColor: "#292937", width: width * 0.8,  borderRadius: 20, padding: 20 }}>
+            <Text style={{ textAlign: "center", fontSize: 20, color:"white" }}>Asistencia Marcada</Text>
+            <TouchableOpacity  style={[styles.boton,  {backgroundColor:"#E53854"}]} 
+            onPress={() => {
+              setModalVisible(!modalVisible);
+            }}
+            >
+                <Text style={{ textAlign: 'center', color: "white", fontSize: 18 }}>Aceptar</Text>
+            </TouchableOpacity>
+              
+           
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -92,7 +119,6 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 40,
     textAlign: "center",
-    marginBottom: 10
   },
   boton: {
     backgroundColor: "#292937",
