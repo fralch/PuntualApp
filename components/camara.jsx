@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Camera, CameraType } from 'expo-camera';
-import { Button, StyleSheet, Text, TouchableOpacity, View, Dimensions, Image, Modal  } from 'react-native';
+import { Button, StyleSheet, Text, TouchableOpacity, View, Dimensions, Image, Modal, TextInput  } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { getSesion, storeSesion } from '../hooks/handleSession.js';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const { width, height } = Dimensions.get('window');
@@ -12,10 +13,21 @@ export default function Camara() {
   const [hora, sethora] = useState("");
   const [fecha, setfecha] = useState("Lunes 20 de Septiembre");
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalDNI, setModalDNI] = useState(false);
+  const [sesion, setSesion] = useState(null);
   const navigation = useNavigation();
   useEffect(() => {
     requestPermission();
-    console.log(hora)
+  }, []);
+
+  useEffect(() => {
+    getSesion()
+    .then((data) => {
+      setSesion(JSON.parse(data));
+      if (data === null) {
+        setModalDNI(true);
+      }
+    });
   }, []);
 
   useEffect(() => {
@@ -77,9 +89,8 @@ export default function Camara() {
             </TouchableOpacity>
       </LinearGradient>
 
-      {/* modal para confirmar marcaje de asisatencia  */}
       <Modal
-        animationType="slide"
+        animationType="fade"
         transparent={true}
         visible={modalVisible}
       
@@ -89,6 +100,24 @@ export default function Camara() {
             <Text style={{ textAlign: "center", fontSize: 20, color:"white" }}>Asistencia Marcada</Text>
             <TouchableOpacity  style={[styles.boton,  {backgroundColor:"#E53854"}]} onPress={() => {setModalVisible(!modalVisible);}}>
                 <Text style={{ textAlign: 'center', color: "white", fontSize: 18 }}>Aceptar</Text>
+            </TouchableOpacity>
+              
+           
+          </View>
+        </View>
+      </Modal>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalDNI}
+      
+      >
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(0,0,0,0.5)" }}>
+          <View style={{ backgroundColor: "#292937", width: width * 0.8, borderRadius: 20, padding: 20 }}>
+            <TextInput style={{ textAlign: "center", borderBottomColor: 'white', borderBottomWidth: 1, marginTop: 20, marginBottom: 20, height: 40, fontSize: 20, color: "white"
+           }} placeholder="Ingrese su DNI" placeholderTextColor="white" keyboardType="numeric" maxLength={8} onChangeText={(text) => {setSesion({ dni: text });}}/>
+            <TouchableOpacity  style={[styles.boton,  {backgroundColor:"#E53854"}]} onPress={() => {setModalVisible(!modalDNI);}}>
+                <Text style={{ textAlign: 'center', color: "white", fontSize: 18 }}>Guardar</Text>
             </TouchableOpacity>
               
            
