@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Camera, CameraType } from 'expo-camera';
-import { Button, StyleSheet, Text, TouchableOpacity, View, Dimensions, Image, Modal, TextInput  } from 'react-native';
+import { Button, StyleSheet, Text, TouchableOpacity, View, Dimensions, Image, Modal, TextInput , Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getSesion, storeSesion } from '../hooks/handleSession.js';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -23,12 +23,13 @@ export default function Camara() {
   useEffect(() => {
     getSesion()
     .then((data) => {
-      setSesion(JSON.parse(data));
+      console.log(typeof data);
       if (data === null) {
+        setSesion(JSON.parse(data));
         setModalDNI(true);
       }
     });
-  }, []);
+  }, [sesion]);
 
   useEffect(() => {
     const fecha_actual = new Date();
@@ -59,6 +60,12 @@ export default function Camara() {
         </TouchableOpacity>
       </View>
     )
+  }
+  const guardarContras = () => {
+    storeSesion(sesion)
+      .then(() => {
+        setModalDNI(false);
+      });
   }
 
   return (
@@ -116,7 +123,7 @@ export default function Camara() {
           <View style={{ backgroundColor: "#292937", width: width * 0.8, borderRadius: 20, padding: 20 }}>
             <TextInput style={{ textAlign: "center", borderBottomColor: 'white', borderBottomWidth: 1, marginTop: 20, marginBottom: 20, height: 40, fontSize: 20, color: "white"
            }} placeholder="Ingrese su DNI" placeholderTextColor="white" keyboardType="numeric" maxLength={8} onChangeText={(text) => {setSesion({ dni: text });}}/>
-            <TouchableOpacity  style={[styles.boton,  {backgroundColor:"#E53854"}]} onPress={() => {setModalVisible(!modalDNI);}}>
+            <TouchableOpacity  style={[styles.boton,  {backgroundColor:"#E53854"}]} onPress={guardarContras()}>
                 <Text style={{ textAlign: 'center', color: "white", fontSize: 18 }}>Guardar</Text>
             </TouchableOpacity>
               
