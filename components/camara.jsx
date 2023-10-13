@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Camera, CameraType } from 'expo-camera';
 import { Button, StyleSheet, Text, TouchableOpacity, View, Dimensions, Image, Modal, TextInput , Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { getSesion, storeSesion } from '../hooks/handleSession.js';
+import { getSesion, storeSesion, removeSesion } from '../hooks/handleSession.js';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const { width, height } = Dimensions.get('window');
@@ -23,13 +23,13 @@ export default function Camara() {
   useEffect(() => {
     getSesion()
     .then((data) => {
-      console.log(typeof data);
-      if (data === null) {
+      if (data == null) {
+        console.log(data);
         setSesion(JSON.parse(data));
         setModalDNI(true);
       }
     });
-  }, [sesion]);
+  }, []);
 
   useEffect(() => {
     const fecha_actual = new Date();
@@ -65,6 +65,19 @@ export default function Camara() {
     storeSesion(sesion)
       .then(() => {
         setModalDNI(false);
+      });
+  }
+
+  const borrarSession = () => {
+      removeSesion()
+      .then(() => {
+        setSesion(null);
+        setModalDNI(true);
+        getSesion()
+          .then((data) => {
+            console.log(`datos de la sesion ${data}`);
+          });
+        
       });
   }
 
