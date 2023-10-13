@@ -24,9 +24,12 @@ export default function Camara() {
     getSesion()
     .then((data) => {
       if (data == null) {
-        console.log(data);
-        setSesion(JSON.parse(data));
+        console.log(`get sesion ${data}`);
         setModalDNI(true);
+      }
+      else {
+        setSesion(JSON.parse(data));
+        console.log(`sesion obtenida sesion ${data}`);
       }
     });
   }, []);
@@ -64,7 +67,7 @@ export default function Camara() {
   const guardarContras = () => {
     storeSesion(sesion)
       .then(() => {
-        setModalDNI(false);
+        // setModalDNI(false);
       });
   }
 
@@ -136,7 +139,15 @@ export default function Camara() {
           <View style={{ backgroundColor: "#292937", width: width * 0.8, borderRadius: 20, padding: 20 }}>
             <TextInput style={{ textAlign: "center", borderBottomColor: 'white', borderBottomWidth: 1, marginTop: 20, marginBottom: 20, height: 40, fontSize: 20, color: "white"
            }} placeholder="Ingrese su DNI" placeholderTextColor="white" keyboardType="numeric" maxLength={8} onChangeText={(text) => {setSesion({ dni: text });}}/>
-            <TouchableOpacity  style={[styles.boton,  {backgroundColor:"#E53854"}]} onPress={guardarContras()}>
+            <TouchableOpacity  style={[styles.boton,  {backgroundColor:"#E53854"}]} onPress={
+              () => {
+                console.log(JSON.stringify(sesion));
+                storeSesion(JSON.stringify(sesion))
+                  .then(() => {
+                    setModalDNI(false);
+                  });
+              }
+            }>
                 <Text style={{ textAlign: 'center', color: "white", fontSize: 18 }}>Guardar</Text>
             </TouchableOpacity>
               
