@@ -88,7 +88,7 @@ export default function Camara() {
   const tomarFoto = async () => {
     // const foto = await camaraRef.current.takePictureAsync();
     // console.log(foto);
-    const response = await fetch('http://192.168.1.24:3000/usuarios', {
+    const response = await fetch('http://192.168.1.24:3000/registro_asistencias', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
