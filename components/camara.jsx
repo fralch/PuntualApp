@@ -105,7 +105,10 @@ export default function Camara() {
         >
         </Camera>
       </View>
-            <TouchableOpacity  onPress={() => {setModalVisible(true)}}>
+            <TouchableOpacity  onPress={() => {
+              setModalVisible(true);
+              // removeSesion()
+            }}>
               <LinearGradient colors={['#E53854', '#E53854']} style={styles.boton}> 
                   <Text style={{ textAlign: 'center', color: "white", fontSize:18 }}>Tomar foto</Text>
               </LinearGradient>
