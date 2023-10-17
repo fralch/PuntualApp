@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect , useRef} from 'react';
 import { Camera, CameraType } from 'expo-camera';
-import { Button, StyleSheet, Text, TouchableOpacity, View, Dimensions, Image, Modal, TextInput , Alert } from 'react-native';
+import { Button, StyleSheet, Text, TouchableOpacity, View, Dimensions, Image, Modal, TextInput , Alert,  } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getSesion, storeSesion, removeSesion } from '../hooks/handleSession.js';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -16,6 +16,8 @@ export default function Camara() {
   const [modalDNI, setModalDNI] = useState(false);
   const [sesion, setSesion] = useState(null);
   const navigation = useNavigation();
+  const camaraRef = useRef(null);
+
   useEffect(() => {
     requestPermission();
   }, []);
@@ -83,6 +85,28 @@ export default function Camara() {
         
       });
   }
+  const tomarFoto = async () => {
+    // const foto = await camaraRef.current.takePictureAsync();
+    // console.log(foto);
+    const response = await fetch('http://192.168.1.24:3000/usuarios', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        dni: sesion.dni,
+        fecha: new Date(),
+      })
+    })
+    const data = await response.json();
+    console.log(data);
+
+    
+
+    setModalVisible(true);
+    
+  }
+
 
   return (
     <View style={styles.container}> 
@@ -102,12 +126,14 @@ export default function Camara() {
               sethora(new Date().toLocaleTimeString())
             }, 1000)
           }}
+          ref={camaraRef}
         >
         </Camera>
       </View>
             <TouchableOpacity  onPress={() => {
-              setModalVisible(true);
-              // removeSesion()
+              tomarFoto();
+             
+              
             }}>
               <LinearGradient colors={['#E53854', '#E53854']} style={styles.boton}> 
                   <Text style={{ textAlign: 'center', color: "white", fontSize:18 }}>Tomar foto</Text>
