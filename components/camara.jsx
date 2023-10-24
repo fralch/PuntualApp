@@ -86,25 +86,26 @@ export default function Camara() {
       });
   }
   const tomarFoto = async () => {
-    // const foto = await camaraRef.current.takePictureAsync();
-    // console.log(foto);
-    const response = await fetch('http://192.168.1.24:3000/registro_asistencias', {
+    const foto = await camaraRef.current.takePictureAsync();
+
+    const formData = new FormData();
+    formData.append('dni', sesion.dni);
+    formData.append('foto', {
+      uri: foto.uri,
+      type: 'image/jpeg',
+      name: 'foto.jpg',
+    });
+
+    const response = await fetch('http://192.168.1.26:3000/registro_asistencias', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        dni: sesion.dni,
-        fecha: new Date(),
-      })
-    })
+      body: formData,
+    });
+
     const data = await response.json();
     console.log(data);
 
-    
-
     setModalVisible(true);
-    
+  
   }
 
 
