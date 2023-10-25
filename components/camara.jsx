@@ -1,6 +1,6 @@
 import React, { useState, useEffect , useRef} from 'react';
 import { Camera, CameraType } from 'expo-camera';
-import { Button, StyleSheet, Text, TouchableOpacity, View, Dimensions, Image, Modal, TextInput , Alert,  } from 'react-native';
+import { Button, StyleSheet, Text, TouchableOpacity, View, Dimensions, Image, Modal, TextInput , Alert,ActivityIndicator  } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getSesion, storeSesion, removeSesion } from '../hooks/handleSession.js';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -15,6 +15,7 @@ export default function Camara() {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalDNI, setModalDNI] = useState(false);
   const [sesion, setSesion] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
   const camaraRef = useRef(null);
 
@@ -87,7 +88,7 @@ export default function Camara() {
   }
   const tomarFoto = async () => {
     const foto = await camaraRef.current.takePictureAsync();
-
+    setLoading(true);
     const formData = new FormData();
     formData.append('dni', sesion.dni);
     formData.append('foto', {
@@ -103,13 +104,14 @@ export default function Camara() {
 
     const data = await response.json();
     console.log(data);
-
+    setLoading(false);
     setModalVisible(true);
   
   }
 
 
   return (
+    
     <View style={styles.container}> 
       <LinearGradient colors={['#18191c', '#2F2E3C']} style={{flex:1, paddingTop:60}} 
       start={{ x: 0.9, y: 1}} end={{ x: 0.1, y: 1 }}
@@ -183,6 +185,16 @@ export default function Camara() {
               
            
           </View>
+        </View>
+      </Modal>
+      <Modal 
+        animationType="fade"
+        transparent={true}
+        visible={loading}
+      >
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(0,0,0,0.5)" }}>
+            <ActivityIndicator size="large" color="#E53854" />
+            <Text style={{ textAlign: "center", fontSize: 20, color:"white" }}>Cargando...</Text>
         </View>
       </Modal>
     </View>
