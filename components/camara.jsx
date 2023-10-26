@@ -16,6 +16,7 @@ export default function Camara() {
   const [modalDNI, setModalDNI] = useState(false);
   const [sesion, setSesion] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [mensajeRetorno, setMensajeRetorno] = useState("");
   const navigation = useNavigation();
   const camaraRef = useRef(null);
 
@@ -104,6 +105,7 @@ export default function Camara() {
 
     const data = await response.json();
     console.log(data);
+    setMensajeRetorno(data.message ? data.message : data.error);
     setLoading(false);
     setModalVisible(true);
   
@@ -152,7 +154,7 @@ export default function Camara() {
       >
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(0,0,0,0.5)" }}>
           <View style={{ backgroundColor: "#292937", width: width * 0.8,  borderRadius: 20, padding: 20 }}>
-            <Text style={{ textAlign: "center", fontSize: 20, color:"white" }}>Asistencia Marcada</Text>
+            <Text style={{ textAlign: "center", fontSize: 20, color:"white" }}>{mensajeRetorno}</Text>
             <TouchableOpacity  style={[styles.boton,  {backgroundColor:"#E53854"}]} onPress={() => {setModalVisible(!modalVisible);}}>
                 <Text style={{ textAlign: 'center', color: "white", fontSize: 18 }}>Aceptar</Text>
             </TouchableOpacity>
