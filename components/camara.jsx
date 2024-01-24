@@ -4,6 +4,7 @@ import { Button, StyleSheet, Text, TouchableOpacity, View, Dimensions, Image, Mo
 import { useNavigation } from '@react-navigation/native';
 import { getSesion, storeSesion, removeSesion } from '../hooks/handleSession.js';
 import { LinearGradient } from 'expo-linear-gradient';
+import axios from 'axios';
 
 const { width, height } = Dimensions.get('window');
 
@@ -98,16 +99,23 @@ export default function Camara() {
       name: 'foto.jpg',
     });
 
-    const response = await fetch('http://192.168.1.26:3000/registro_asistencias', {
-      method: 'POST',
-      body: formData,
-    });
-
-    const data = await response.json();
-    console.log(data);
-    setMensajeRetorno(data.message ? data.message : data.error);
-    setLoading(false);
-    setModalVisible(true);
+    axios.post('http://192.168.1.5:3000/registro_asistencias', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+      .then((response) => {
+        console.log(response);
+        // setMensajeRetorno(response.data.message);
+        // setModalVisible(true);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        // setMensajeRetorno(error);
+        // setModalVisible(true);
+        setLoading(false);
+    })
   
   }
 
