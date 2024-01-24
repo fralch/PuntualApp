@@ -99,21 +99,21 @@ export default function Camara() {
       name: 'foto.jpg',
     });
 
-    axios.post('http://192.168.1.5:3000/registro_asistencias', formData, {
+    axios.post('http://192.168.1.50:3000/registro_asistencias', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     })
       .then((response) => {
         console.log(response);
-        // setMensajeRetorno(response.data.message);
-        // setModalVisible(true);
+        setMensajeRetorno(response.data?.message);
+        setModalVisible(true);
         setLoading(false);
       })
       .catch((error) => {
         console.log(error);
-        // setMensajeRetorno(error);
-        // setModalVisible(true);
+        setMensajeRetorno('Error al registrar asistencia');
+        setModalVisible(true);
         setLoading(false);
     })
   
