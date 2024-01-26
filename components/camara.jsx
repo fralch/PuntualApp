@@ -110,9 +110,9 @@ export default function Camara() {
         setModalVisible(true);
         setLoading(false);
       })
-      .catch((error) => {
-        console.log(error);
-        setMensajeRetorno('Error al registrar asistencia');
+      .catch((error ) => {
+        console.log(error.response );
+        setMensajeRetorno(error.response?.data?.error || 'Error al registrar asistencia' );
         setModalVisible(true);
         setLoading(false);
     })
