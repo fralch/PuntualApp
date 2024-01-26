@@ -9,6 +9,7 @@ import axios from 'axios';
 const { width, height } = Dimensions.get('window');
 
 export default function Camara() {
+  const [minTardanza, setMinTardanza] = useState(0);
   const [type, setType] = useState(CameraType.front);
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [hora, sethora] = useState("");
@@ -50,6 +51,21 @@ export default function Camara() {
     setfecha(` ${fecha_actual.getDate()} de ${meses[mes]} del ${ano}`);
   }, []);
 
+  useEffect(() => {
+    // obtener tardanzas 
+    if(sesion != null){
+      const dni = sesion?.dni;
+        axios.get(`http://192.168.1.50:3000/tardanzas/${dni}`)
+          .then((response) => {
+            console.log(response.data[0].minutos);
+            setMinTardanza(response.data[0].minutos);
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+
+    }
+  }, [sesion]);
 
   if (!permission) {
     // Camera permissions are still loading
@@ -129,7 +145,7 @@ export default function Camara() {
         <View  style={styles.fecha_completa}>
           <Text style={styles.fecha}>{fecha}</Text>
           <Text style={styles.hora}>{hora}</Text>
-          <Text style={{color:"white", alignSelf:"center", marginVertical:0}}>Total min tarde: 12</Text>
+          <Text style={{color:"white", alignSelf:"center", marginVertical:0}}>Total min tarde: {minTardanza}</Text>
         </View>
       <View style={{ marginHorizontal: 10, borderRadius:50, overflow: 'hidden' }}>
         <Camera style={{ height: height * 0.70 }}  
