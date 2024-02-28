@@ -121,7 +121,7 @@ export default function Camara() {
         <View  style={styles.fecha_completa}>
           <Text style={styles.fecha}>{fecha}</Text>
           <Text style={styles.hora}>{hora}</Text>
-          <Text style={{color:"white", alignSelf:"center", marginVertical:0}}>Total min tarde: 12</Text>
+          <Text style={{color:"white", alignSelf:"center", marginVertical:0}}>Total min tarde: 10</Text>
         </View>
       <View style={{ marginHorizontal: 10, borderRadius:50, overflow: 'hidden' }}>
         <Camera style={{ height: height * 0.70 }}  
